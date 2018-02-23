@@ -18,6 +18,7 @@ int main(void)
                                 {3,0,2,4},
                                 {7,2,0,1},
                                 {9,4,1,0}};
+  int finalCost[4] = {-1,-1,-1,-1};
 /*                                                             */
 /******************Executable Code Begins Here******************/
 /*                                                             */
@@ -54,31 +55,60 @@ int main(void)
     start = smallCostPos;
     visited[start] = 1; //sets the new start node as visited
   }
-//print to show that I'm a winner
-    int i;
-    printf("visited:\n");
-    for(i = 0; i < totalNodes; i++)
-    {
-        printf("%d ", visited[i]);
-      printf("\n");
-    }
-    printf("\n");
+/*****************Find Shortest Paths*****************
+1. do this until node is @ 0 (prev = -1)
+2. do this for each node (for loop)
+3. update cost (newcost = sum of costs past and present )
 
-    int j;
-    printf("cost:\n");
-    for(j = 0; j < totalNodes; j++)
-    {
-        printf("%d ", cost[j]);
-      printf("\n");
-    }
-    printf("\n");
+1. check node cost & add to totcost
+2. check node for prev.
+3. if (prev != -1) node = prev & repeat
+    else - cost[originode] = totcost
+*/
+  int current;
+  int totcost;
+  int originode;
+  for(originode = 0; originode < totalNodes; originode++) // for each node
+  {
+    current = originode;
+    totcost = 0;
+     //indiv process => while not node 0
 
-    int k;
-    printf("previous:\n");
-    for(k = 0; k < totalNodes; k++)
+    while(previous[current] != -1)
     {
-        printf("%d ", previous[k]);
-      printf("\n");
-    }
+        totcost += cost[current]; //add collective cost
+        current = previous[current];//increment to next node
+    }//while
+
+    finalCost[originode] = totcost;
+  }//for
+
+/************print to show that I'm a winner***********/
+  int i;
+  printf("visited:\n");
+  for(i = 0; i < totalNodes; i++)
+  {
+      printf("%d ", visited[i]);
     printf("\n");
+  }
+  printf("\n");
+
+  int j;
+  printf("cost:\n");
+  for(j = 0; j < totalNodes; j++)
+  {
+      printf("%d ", finalCost[j]);
+    printf("\n");
+  }
+  printf("\n");
+
+  int k;
+  printf("previous:\n");
+  for(k = 0; k < totalNodes; k++)
+  {
+      printf("%d ", previous[k]);
+    printf("\n");
+  }
+  printf("\n");
 }//main
+
